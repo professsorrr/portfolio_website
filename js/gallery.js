@@ -1,7 +1,7 @@
-/* The "Work" section: video cards, the swipeable rails, and the
-   filter-chip + search view. */
+/* The "Work" section: video cards, the swipeable rails, and the game chips
+   that pick which single rail is on screen. */
 
-import { CATS, totalVideos } from "./data.js";
+import { CATS } from "./data.js";
 import { $, $$, esc } from "./utils.js";
 
 /* ---------- thumbnails ---------- */
@@ -40,9 +40,6 @@ function cardHTML(v) {
     esc(v._catId) +
     '" data-i="' +
     v._i +
-    '" ' +
-    'data-q="' +
-    esc((v.title + " " + v._cat).toLowerCase()) +
     '" tabindex="0">' +
     '<div class="card-thumb">' +
     '<div class="ph"><div><b>' +
@@ -72,20 +69,20 @@ function cardHTML(v) {
 
 /* ---------- build filters + rails ---------- */
 export function renderRails() {
-  $("#filters").innerHTML =
-    '<button class="chip active" data-f="all">All <span class="n">' +
-    totalVideos +
-    "</span></button>" +
-    CATS.map(
-      (c) =>
-        '<button class="chip" data-f="' +
-        c.id +
-        '">' +
-        esc(c.name) +
-        ' <span class="n">' +
-        c.videos.length +
-        "</span></button>",
-    ).join("");
+  /* One chip per game, no "All". The first game in site-config.js is the
+     one that shows when the page loads — reorder that list to change it. */
+  $("#filters").innerHTML = CATS.map(
+    (c, i) =>
+      '<button class="chip' +
+      (i === 0 ? " active" : "") +
+      '" data-f="' +
+      c.id +
+      '">' +
+      esc(c.name) +
+      ' <span class="n">' +
+      c.videos.length +
+      "</span></button>",
+  ).join("");
 
   $("#rails").innerHTML = CATS.map(
     (c) =>
@@ -199,24 +196,14 @@ export function setupRails() {
 }
 
 /* ---------- filters ---------- */
-let activeFilter = "all";
+/* Exactly one game is visible at a time. Starts on the first game in
+   site-config.js, then follows whichever chip was clicked last. */
+let activeFilter = CATS.length ? CATS[0].id : "";
+
 export function applyView() {
-  const q = $("#search").value.trim().toLowerCase();
-  let shown = 0;
   $$(".rail-block").forEach((block) => {
-    const inFilter =
-      activeFilter === "all" || block.dataset.cat === activeFilter;
-    let visibleCards = 0;
-    $$(".card", block).forEach((card) => {
-      const match = !q || card.dataset.q.includes(q);
-      card.style.display = match ? "" : "none";
-      if (match) visibleCards++;
-    });
-    const show = inFilter && visibleCards > 0;
-    block.style.display = show ? "" : "none";
-    if (show) shown += visibleCards;
+    block.style.display = block.dataset.cat === activeFilter ? "" : "none";
   });
-  $("#noResults").style.display = shown ? "none" : "block";
 }
 
 export function initFilters() {
@@ -226,15 +213,6 @@ export function initFilters() {
       chip.classList.add("active");
       activeFilter = chip.dataset.f;
       applyView();
-      if (activeFilter !== "all") {
-        const t = $("#cat-" + activeFilter);
-        if (t)
-          setTimeout(
-            () => t.scrollIntoView({ behavior: "smooth", block: "start" }),
-            80,
-          );
-      }
     }),
   );
-  $("#search").addEventListener("input", applyView);
 }

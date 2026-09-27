@@ -18,7 +18,7 @@ portfolio/
 │   ├── utils.js         ← tiny shared helpers
 │   ├── data.js          ← builds the category list from the config
 │   ├── content.js       ← fills the one-off sections
-│   ├── gallery.js       ← cards, rails, filters, search
+│   ├── gallery.js       ← cards, rails, game chips
 │   ├── lightbox.js      ← the video player overlay + showreel
 │   └── ui.js            ← nav, burger menu, scroll reveal, contact form
 ├── videos/              ← drop your .mp4 files here
@@ -80,7 +80,11 @@ Each block in `categories` is one game row:
 ```
 
 Add, remove or reorder them freely. A game with an empty `videos` array is hidden
-automatically, and the filter chips + counts update themselves.
+automatically, and the chips + counts update themselves.
+
+**One game shows at a time**, and the page opens on whichever game is **first** in the
+`categories` list. Want it to open on a different game? Move that game's block to the top
+of the list — nothing else to change.
 
 ## 5. Your details
 
