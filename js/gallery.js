@@ -99,14 +99,17 @@ export function renderRails() {
       " edit" +
       (c.videos.length > 1 ? "s" : "") +
       "</span></div>" +
-      '<div class="rail-nav">' +
-      '<button data-dir="-1" aria-label="Scroll left"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>' +
-      '<button data-dir="1" aria-label="Scroll right"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>' +
       "</div>" +
-      "</div>" +
+      /* the arrows live inside the viewport so they can sit on top of the
+         first and last video, centred on the thumbnail */
       '<div class="rail-viewport"><div class="rail">' +
       c.videos.map(cardHTML).join("") +
-      "</div></div>" +
+      "</div>" +
+      '<div class="rail-nav">' +
+      '<button class="rail-arrow prev" data-dir="-1" aria-label="Scroll left"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>' +
+      '<button class="rail-arrow next" data-dir="1" aria-label="Scroll right"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>' +
+      "</div>" +
+      "</div>" +
       "</section>",
   ).join("");
 }
@@ -217,18 +220,40 @@ function attachScroller(track, viewport, buttons, stepFn) {
   return update;
 }
 
+/* Re-run after a rail is shown or the window changes size: a hidden rail
+   measures as zero, so its arrows can only be placed once it is on screen. */
+const railLayouts = [];
+
 export function setupRails() {
+  railLayouts.length = 0;
   $$(".rail-block").forEach((block) => {
     const rail = $(".rail", block);
-    attachScroller(
-      rail,
-      $(".rail-viewport", block),
-      $$(".rail-nav button", block),
-      () => {
-        const card = $(".card", rail);
-        return card ? card.getBoundingClientRect().width + 16 : 320;
-      },
-    );
+    const viewport = $(".rail-viewport", block);
+    const refresh = attachScroller(rail, viewport, $$(".rail-arrow", block), () => {
+      const card = $(".card", rail);
+      return card ? card.getBoundingClientRect().width + 16 : 320;
+    });
+
+    /* Put the arrows level with the middle of the thumbnail rather than the
+       middle of the whole card, which would sit them over the title text. */
+    const placeArrows = () => {
+      const thumb = $(".card-thumb", rail);
+      if (!thumb) return;
+      const t = thumb.getBoundingClientRect();
+      if (!t.height) return; /* rail is hidden right now — measured later */
+      const v = viewport.getBoundingClientRect();
+      viewport.style.setProperty(
+        "--arrow-y",
+        t.top - v.top + t.height / 2 + "px",
+      );
+    };
+
+    placeArrows();
+    window.addEventListener("resize", placeArrows);
+    railLayouts.push(() => {
+      placeArrows();
+      refresh();
+    });
   });
 }
 
@@ -253,6 +278,8 @@ export function applyView() {
   $$(".rail-block").forEach((block) => {
     block.style.display = block.dataset.cat === activeFilter ? "" : "none";
   });
+  /* the rail that just appeared could not be measured while it was hidden */
+  railLayouts.forEach((refresh) => refresh());
 }
 
 export function initFilters() {

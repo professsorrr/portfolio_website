@@ -69,19 +69,79 @@ header.nav.solid {
 .nav-links a:hover::after {
   width: 100%;
 }
-.nav-cta {
-  border: 1px solid var(--line);
-  padding: 9px 18px;
+/* The one button in the nav that should pull the eye: filled in the accent
+   colour, with a soft glow, a live dot and a shine that sweeps across on
+   hover. Everything else up here is quiet on purpose. */
+.nav-links a.nav-cta {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
   border-radius: 100px;
   font-size: 12px;
+  font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  transition: 0.3s var(--ease);
+  color: #fff;
+  border: 1px solid transparent;
+  background: linear-gradient(135deg, #ff6a3d, var(--accent) 55%, #e33417);
+  box-shadow:
+    0 6px 20px rgba(255, 75, 43, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  transition:
+    transform 0.35s var(--ease),
+    box-shadow 0.35s var(--ease);
 }
-.nav-cta:hover {
-  background: var(--text);
-  color: #000;
-  border-color: var(--text);
+/* the small pulsing "available" dot */
+.nav-links a.nav-cta::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+  animation: cta-pulse 2.4s var(--ease) infinite;
+}
+/* the shine that sweeps across on hover */
+.nav-links a.nav-cta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.38) 50%,
+    transparent 70%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.75s var(--ease);
+}
+.nav-links a.nav-cta:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 12px 32px rgba(255, 75, 43, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+.nav-links a.nav-cta:hover::after {
+  transform: translateX(120%);
+}
+.nav-links a.nav-cta:active {
+  transform: translateY(0);
+}
+@keyframes cta-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.65);
+  }
+  70% {
+    box-shadow: 0 0 0 7px rgba(255, 255, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
 }
 .burger {
   display: none;

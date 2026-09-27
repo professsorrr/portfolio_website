@@ -207,36 +207,58 @@
   text-transform: uppercase;
   color: var(--muted-2);
 }
+/* Arrows sit ON the first and last video, vertically centred on the
+   thumbnail. --arrow-y is measured in gallery.js because the thumbnail's
+   height depends on the card width, which changes at every breakpoint. */
 .rail-nav {
-  display: flex;
-  gap: 8px;
-  flex: 0 0 auto;
+  position: absolute;
+  inset: 0;
+  z-index: 2; /* above the edge fade, which paints last */
+  pointer-events: none;
 }
-.rail-nav button {
-  width: 38px;
-  height: 38px;
+.rail-arrow {
+  position: absolute;
+  top: var(--arrow-y, 45%);
+  transform: translateY(-50%);
+  pointer-events: auto;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   display: grid;
   place-items: center;
-  transition: 0.28s var(--ease);
-  color: var(--muted);
+  color: #fff;
+  background: rgba(10, 11, 14, 0.62);
+  backdrop-filter: blur(7px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+  transition:
+    opacity 0.28s var(--ease),
+    background 0.28s var(--ease),
+    transform 0.28s var(--ease);
 }
-.rail-nav button:hover:not(:disabled) {
+.rail-arrow.prev {
+  left: 10px;
+}
+.rail-arrow.next {
+  right: 10px;
+}
+.rail-arrow:hover:not(:disabled) {
   background: var(--text);
   color: #000;
   border-color: var(--text);
+  transform: translateY(-50%) scale(1.08);
 }
-.rail-nav button:disabled {
-  opacity: 0.22;
-  cursor: default;
+/* at either end the arrow has nothing to do, so get it off the artwork */
+.rail-arrow:disabled {
+  opacity: 0;
+  pointer-events: none;
 }
-.rail-nav svg {
-  width: 15px;
-  height: 15px;
+.rail-arrow svg {
+  width: 17px;
+  height: 17px;
   fill: none;
   stroke: currentColor;
-  stroke-width: 2;
+  stroke-width: 2.2;
 }
 
 .rail-viewport {
