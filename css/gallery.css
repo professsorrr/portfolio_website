@@ -144,6 +144,11 @@
   cursor: grabbing;
   scroll-behavior: auto;
 }
+/* only while dragging, so a normal click can still focus/select text */
+.filters.dragging,
+.rail.dragging {
+  user-select: none;
+}
 .filters::-webkit-scrollbar {
   display: none;
 }

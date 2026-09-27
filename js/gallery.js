@@ -143,42 +143,64 @@ function attachScroller(track, viewport, buttons, stepFn) {
   window.addEventListener("resize", update);
   setTimeout(update, 60);
 
-  /* pointer drag (mouse + pen). Touch uses native momentum scrolling. */
+  /* Pointer drag (mouse + pen). Touch uses native momentum scrolling.
+
+     The capture is deliberately NOT taken on pointerdown. Capturing there
+     retargets the click that follows to this container, so the click never
+     reaches the chip or card underneath and a plain click does nothing. We
+     only capture once the pointer has actually travelled far enough to be a
+     drag rather than a click. */
+  const DRAG_THRESHOLD = 6;
   let down = false,
+    dragging = false,
     startX = 0,
     startScroll = 0,
-    moved = 0;
+    pointerId = null;
+
   track.addEventListener("pointerdown", (e) => {
     if (e.pointerType === "touch") return;
     down = true;
-    moved = 0;
+    dragging = false;
     startX = e.clientX;
     startScroll = track.scrollLeft;
-    track.classList.add("dragging");
-    track.setPointerCapture(e.pointerId);
+    pointerId = e.pointerId;
   });
+
   track.addEventListener("pointermove", (e) => {
     if (!down) return;
     const d = e.clientX - startX;
-    moved = Math.abs(d);
+    if (!dragging) {
+      if (Math.abs(d) <= DRAG_THRESHOLD) return;
+      dragging = true;
+      track.classList.add("dragging");
+      try {
+        track.setPointerCapture(pointerId);
+      } catch (_) {}
+    }
     track.scrollLeft = startScroll - d;
   });
-  const endDrag = (e) => {
+
+  const endDrag = () => {
     if (!down) return;
     down = false;
-    track.classList.remove("dragging");
-    try {
-      track.releasePointerCapture(e.pointerId);
-    } catch (_) {}
-    /* a drag should not also count as a click on whatever sat under the cursor */
-    if (moved > 6) {
+    if (dragging) {
+      track.classList.remove("dragging");
+      try {
+        track.releasePointerCapture(pointerId);
+      } catch (_) {}
+      /* a drag should not also count as a click on whatever sat under it */
       const kill = (ev) => ev.stopPropagation();
       track.addEventListener("click", kill, { capture: true, once: true });
+      setTimeout(() => track.removeEventListener("click", kill, true), 0);
     }
+    dragging = false;
   };
   track.addEventListener("pointerup", endDrag);
   track.addEventListener("pointercancel", endDrag);
   track.addEventListener("pointerleave", endDrag);
+
+  /* stop the browser's native image/text drag from hijacking a slow drag */
+  track.addEventListener("dragstart", (e) => e.preventDefault());
 
   /* trackpad horizontal + shift-wheel */
   track.addEventListener(
