@@ -50,7 +50,7 @@
   object-fit: cover;
   /* the photo is 9:16 in a 4:5 box, so it crops top and bottom: bias the
      crop upward to frame the face rather than the middle of the torso */
-  object-position: center 30%;
+  object-position: center 45%;
 }
 .about-visual .ph-portrait {
   text-align: center;
@@ -329,4 +329,3 @@ footer.site {
   height: 16px;
   fill: currentColor;
 }
-
