@@ -38,8 +38,13 @@
   .wrap {
     padding: 0 20px;
   }
+  /* a tall portrait cannot survive a 16/11 letterbox — it clips the face.
+     Keep the box portrait-shaped and cap its width so it does not dominate
+     the page on a tablet. */
   .about-visual {
-    aspect-ratio: 16/11;
+    aspect-ratio: 4 / 5;
+    max-width: 360px;
+    margin: 0 auto;
   }
 }
 @media (max-width: 560px) {

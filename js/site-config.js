@@ -27,6 +27,10 @@ export const SITE = {
   heroVideo: "", // e.g. "videos/hero-loop.mp4"
   heroImage: "images/cover.jpeg",
 
+  // Your photo for the About ("Behind the timeline") section. Leave "" to
+  // show the empty placeholder box instead.
+  portrait: "images/profile.png",
+
   // The big showreel. Either a YouTube id or a local file.
   showreel: { type: "yt", id: "", poster: "", title: "Showreel 2026" },
 

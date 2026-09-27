@@ -42,6 +42,9 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* a tall portrait gets cropped top and bottom here — bias the crop
+     upward so the face stays in frame rather than the centre of the body */
+  object-position: center 28%;
 }
 .about-visual .ph-portrait {
   text-align: center;

@@ -50,6 +50,12 @@ export function renderContent() {
     )
     .join("");
 
+  /* about portrait — replaces the "drop a photo here" placeholder */
+  if (SITE.portrait) {
+    $("#aboutVisual").innerHTML =
+      '<img src="' + esc(SITE.portrait) + '" alt="' + esc(SITE.name) + '" loading="lazy">';
+  }
+
   /* about */
   $("#aboutP1").textContent = SITE.about.p1;
   $("#aboutP2").textContent = SITE.about.p2;
