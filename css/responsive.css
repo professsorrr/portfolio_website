@@ -1,0 +1,75 @@
+/* responsive — every media query, last so it can override the above
+   Loaded 6th (last) in index.html — keep that order, the cascade depends on it. */
+
+/* ---------- responsive ---------- */
+@media (max-width: 1240px) {
+  .lb-arrow.prev {
+    left: 8px;
+  }
+  .lb-arrow.next {
+    right: 8px;
+  }
+}
+@media (max-width: 980px) {
+  .about,
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 44px;
+  }
+  .services,
+  .quotes {
+    grid-template-columns: 1fr;
+  }
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .nav-links {
+    display: none;
+  }
+  .burger {
+    display: block;
+  }
+  .mobile-menu {
+    display: block;
+  }
+  .section {
+    padding: 80px 0;
+  }
+  .wrap {
+    padding: 0 20px;
+  }
+  .about-visual {
+    aspect-ratio: 16/11;
+  }
+}
+@media (max-width: 560px) {
+  .row-2 {
+    grid-template-columns: 1fr;
+  }
+  .rail-nav {
+    display: none;
+  }
+  .hero {
+    min-height: 92svh;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  .rv {
+    opacity: 1;
+    transform: none;
+  }
+  .hero h1 .line span {
+    transform: none;
+  }
+  .hero-sub,
+  .hero-actions {
+    opacity: 1;
+  }
+}

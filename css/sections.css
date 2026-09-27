@@ -1,0 +1,323 @@
+/* sections — about, services, testimonials, contact, footer
+   Loaded 4th in index.html — keep that order, the cascade depends on it. */
+
+/* ---------- about ---------- */
+.about {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 70px;
+  align-items: center;
+}
+.about-copy p {
+  color: var(--muted);
+  font-size: 16.5px;
+}
+.about-copy p + p {
+  margin-top: 16px;
+}
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 30px;
+}
+.skills span {
+  padding: 8px 15px;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.about-visual {
+  aspect-ratio: 4/5;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  overflow: hidden;
+  background: linear-gradient(150deg, #141820, #0a0c0f);
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+.about-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.about-visual .ph-portrait {
+  text-align: center;
+  color: var(--muted-2);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 20px;
+}
+.about-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    80% 60% at 50% 100%,
+    rgba(255, 75, 43, 0.18),
+    transparent 70%
+  );
+}
+
+/* ---------- services ---------- */
+.services {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+.svc {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 34px 30px;
+  background: var(--bg-soft);
+  transition: 0.4s var(--ease);
+  position: relative;
+  overflow: hidden;
+}
+.svc:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 255, 255, 0.2);
+  background: var(--surface);
+}
+.svc.featured {
+  border-color: rgba(255, 75, 43, 0.45);
+}
+.svc.featured::before {
+  content: "Most booked";
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid rgba(255, 75, 43, 0.4);
+  padding: 4px 9px;
+  border-radius: 100px;
+}
+.svc h3 {
+  font-size: 29px;
+  margin-bottom: 6px;
+}
+.svc .price {
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+.svc ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 26px;
+}
+.svc li {
+  padding: 8px 0 8px 24px;
+  position: relative;
+  font-size: 14px;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line-soft);
+}
+.svc li:last-child {
+  border-bottom: 0;
+}
+.svc li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 16px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.75;
+}
+.svc .btn {
+  width: 100%;
+  justify-content: center;
+  padding: 13px;
+}
+
+/* ---------- testimonials ---------- */
+.quotes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+.quote {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 32px 28px;
+  background: var(--bg-soft);
+}
+.quote .stars {
+  color: var(--accent);
+  letter-spacing: 3px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+.quote p {
+  margin: 0 0 22px;
+  font-size: 15.5px;
+  color: #d7dade;
+  line-height: 1.65;
+}
+.quote footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  display: grid;
+  place-items: center;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 16px;
+  color: var(--muted);
+}
+.quote footer b {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+}
+.quote footer small {
+  display: block;
+  font-size: 12px;
+  color: var(--muted-2);
+}
+
+/* ---------- contact ---------- */
+.contact {
+  border-top: 1px solid var(--line);
+  background: var(--bg-soft);
+}
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 70px;
+  align-items: start;
+}
+.contact h2 {
+  margin-bottom: 18px;
+}
+.contact-copy p {
+  color: var(--muted);
+  margin: 0 0 30px;
+}
+.contact-links a {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line-soft);
+  transition: 0.3s;
+  font-size: 15px;
+}
+.contact-links a:hover {
+  color: var(--accent);
+  padding-left: 8px;
+}
+.contact-links .k {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  width: 82px;
+  flex: 0 0 auto;
+}
+form {
+  display: grid;
+  gap: 14px;
+}
+.field label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  margin-bottom: 8px;
+}
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--text);
+  padding: 13px 15px;
+  border-radius: 10px;
+  font-size: 14.5px;
+  outline: none;
+  transition: 0.3s;
+  font-family: inherit;
+}
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  border-color: var(--accent);
+  background: var(--surface-2);
+}
+.field textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+.row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.form-note {
+  font-size: 12px;
+  color: var(--muted-2);
+  margin: 2px 0 0;
+}
+
+/* ---------- footer ---------- */
+footer.site {
+  border-top: 1px solid var(--line);
+  padding: 38px 0;
+}
+.foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.foot small {
+  color: var(--muted-2);
+  font-size: 12.5px;
+}
+.socials {
+  display: flex;
+  gap: 10px;
+}
+.socials a {
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  transition: 0.3s var(--ease);
+  color: var(--muted);
+}
+.socials a:hover {
+  background: var(--text);
+  color: #000;
+  border-color: var(--text);
+}
+.socials svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+

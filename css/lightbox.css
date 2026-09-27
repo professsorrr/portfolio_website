@@ -1,0 +1,156 @@
+/* lightbox — the video overlay, plus the scroll-reveal transition
+   Loaded 5th in index.html — keep that order, the cascade depends on it. */
+
+/* ---------- lightbox ---------- */
+.lb {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(4, 5, 7, 0.94);
+  backdrop-filter: blur(14px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.lb.open {
+  display: flex;
+}
+.lb.show {
+  opacity: 1;
+}
+.lb-inner {
+  width: min(1120px, 100%);
+  position: relative;
+}
+.lb-stage {
+  aspect-ratio: 16/9;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.7);
+}
+.lb-stage iframe,
+.lb-stage video {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+.lb-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+.lb-bar h4 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+}
+.lb-bar span {
+  font-size: 11.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+.lb-yt {
+  color: var(--accent);
+  margin-left: 14px;
+  border-bottom: 1px solid transparent;
+  transition: 0.25s;
+}
+.lb-yt:hover {
+  border-bottom-color: var(--accent);
+}
+.lb-warn {
+  margin: 12px 0 0;
+  padding: 11px 15px;
+  border-radius: 9px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  background: rgba(255, 75, 43, 0.09);
+  border: 1px solid rgba(255, 75, 43, 0.3);
+  color: #f0c9c1;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.lb-close {
+  position: absolute;
+  top: -46px;
+  right: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  display: grid;
+  place-items: center;
+  transition: 0.3s;
+  color: var(--muted);
+}
+.lb-close:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  transform: rotate(90deg);
+}
+.lb-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: rgba(8, 9, 11, 0.7);
+  backdrop-filter: blur(8px);
+  display: grid;
+  place-items: center;
+  transition: 0.3s;
+  color: var(--text);
+  z-index: 2;
+}
+.lb-arrow:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.lb-arrow.prev {
+  left: -64px;
+}
+.lb-arrow.next {
+  right: -64px;
+}
+.lb-arrow svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+.lb-hint {
+  text-align: center;
+  margin-top: 14px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+/* ---------- reveal ---------- */
+.rv {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.8s var(--ease),
+    transform 0.8s var(--ease);
+}
+.rv.in {
+  opacity: 1;
+  transform: none;
+}
+

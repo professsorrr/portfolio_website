@@ -1,0 +1,375 @@
+/* layout — nav, mobile menu, hero, marquee, stats
+   Loaded 2nd in index.html — keep that order, the cascade depends on it. */
+
+/* ---------- nav ---------- */
+header.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 900;
+  transition:
+    background 0.4s var(--ease),
+    border-color 0.4s,
+    backdrop-filter 0.4s;
+  border-bottom: 1px solid transparent;
+}
+header.nav.solid {
+  background: rgba(8, 9, 11, 0.82);
+  backdrop-filter: blur(18px) saturate(1.4);
+  border-bottom-color: var(--line);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+}
+.logo {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 25px;
+  letter-spacing: 0.14em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 14px var(--accent);
+}
+.nav-links {
+  display: flex;
+  gap: 34px;
+  align-items: center;
+}
+.nav-links a {
+  font-size: 12.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color 0.25s;
+  position: relative;
+}
+.nav-links a:hover {
+  color: var(--text);
+}
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  height: 1px;
+  width: 0;
+  background: var(--accent);
+  transition: width 0.3s var(--ease);
+}
+.nav-links a:hover::after {
+  width: 100%;
+}
+.nav-cta {
+  border: 1px solid var(--line);
+  padding: 9px 18px;
+  border-radius: 100px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: 0.3s var(--ease);
+}
+.nav-cta:hover {
+  background: var(--text);
+  color: #000;
+  border-color: var(--text);
+}
+.burger {
+  display: none;
+  width: 26px;
+  height: 16px;
+  position: relative;
+}
+.burger span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: var(--text);
+  transition: 0.3s var(--ease);
+}
+.burger span:nth-child(1) {
+  top: 0;
+}
+.burger span:nth-child(2) {
+  top: 7px;
+}
+.burger span:nth-child(3) {
+  top: 14px;
+}
+.burger.open span:nth-child(1) {
+  top: 7px;
+  transform: rotate(45deg);
+}
+.burger.open span:nth-child(2) {
+  opacity: 0;
+}
+.burger.open span:nth-child(3) {
+  top: 7px;
+  transform: rotate(-45deg);
+}
+.mobile-menu {
+  position: fixed;
+  inset: 70px 0 auto;
+  background: rgba(8, 9, 11, 0.97);
+  backdrop-filter: blur(20px);
+  z-index: 899;
+  transform: translateY(-115%);
+  transition: transform 0.45s var(--ease);
+  border-bottom: 1px solid var(--line);
+  padding: 22px 28px 30px;
+  display: none;
+}
+.mobile-menu.open {
+  transform: translateY(0);
+}
+.mobile-menu a {
+  display: block;
+  padding: 13px 0;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 26px;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+/* ---------- hero ---------- */
+.hero {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding: 110px 0 70px;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero-bg video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.32;
+  filter: saturate(0.7) contrast(1.05);
+}
+.hero-bg .fallback-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      70% 55% at 18% 25%,
+      rgba(255, 75, 43, 0.2),
+      transparent 60%
+    ),
+    radial-gradient(
+      60% 60% at 82% 70%,
+      rgba(127, 211, 232, 0.13),
+      transparent 62%
+    ),
+    linear-gradient(160deg, #0b0d10, #08090b 60%);
+}
+.hero-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 9, 11, 0.55),
+    rgba(8, 9, 11, 0.35) 40%,
+    var(--bg) 96%
+  );
+}
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+.hero h1 {
+  font-size: clamp(58px, 11.5vw, 168px);
+  line-height: 0.86;
+  margin: 0 0 6px;
+}
+.hero h1 .line {
+  display: block;
+  overflow: hidden;
+}
+.hero h1 .line span {
+  display: block;
+  transform: translateY(105%);
+  animation: rise 1s var(--ease) forwards;
+}
+.hero h1 .line:nth-child(2) span {
+  animation-delay: 0.1s;
+}
+.hero h1 .line:nth-child(3) span {
+  animation-delay: 0.2s;
+}
+.hero h1 em {
+  font-style: normal;
+  color: var(--accent);
+}
+@keyframes rise {
+  to {
+    transform: translateY(0);
+  }
+}
+.hero-sub {
+  max-width: 520px;
+  color: var(--muted);
+  font-size: 17px;
+  margin: 26px 0 0;
+  opacity: 0;
+  animation: fade 0.9s var(--ease) 0.45s forwards;
+}
+@keyframes fade {
+  to {
+    opacity: 1;
+  }
+}
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 34px;
+  opacity: 0;
+  animation: fade 0.9s var(--ease) 0.6s forwards;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 28px;
+  border-radius: 100px;
+  font-size: 12.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: 0.35s var(--ease);
+  border: 1px solid transparent;
+}
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 40px rgba(255, 75, 43, 0.35);
+}
+.btn-ghost {
+  border-color: var(--line);
+  color: var(--text);
+}
+.btn-ghost:hover {
+  border-color: var(--text);
+  background: rgba(255, 255, 255, 0.05);
+}
+.scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 30px;
+  transform: translateX(-50%);
+  z-index: 3;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.scroll-cue i {
+  display: block;
+  width: 1px;
+  height: 44px;
+  background: linear-gradient(var(--muted-2), transparent);
+  animation: cue 2s infinite;
+}
+@keyframes cue {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scaleY(0.6);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+/* ---------- marquee ---------- */
+.marquee {
+  border-block: 1px solid var(--line);
+  padding: 16px 0;
+  overflow: hidden;
+  background: var(--bg-soft);
+}
+.marquee-track {
+  display: flex;
+  gap: 44px;
+  width: max-content;
+  animation: scroll 42s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee span {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 19px;
+  letter-spacing: 0.14em;
+  color: var(--muted-2);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 44px;
+}
+.marquee span::after {
+  content: "◆";
+  font-size: 8px;
+  color: var(--accent);
+}
+
+/* ---------- stats ---------- */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--line-soft);
+  border: 1px solid var(--line-soft);
+}
+.stat {
+  background: var(--bg);
+  padding: 34px 26px;
+  text-align: center;
+}
+.stat b {
+  display: block;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 46px;
+  color: var(--text);
+  line-height: 1;
+}
+.stat small {
+  display: block;
+  margin-top: 8px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
