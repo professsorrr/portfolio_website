@@ -46,7 +46,8 @@
   .row-2 {
     grid-template-columns: 1fr;
   }
-  .rail-nav {
+  .rail-nav,
+  .filters-nav {
     display: none;
   }
   .hero {

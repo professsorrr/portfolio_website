@@ -141,7 +141,19 @@
           </p>
         </div>
 
-        <div class="filters rv" id="filters"></div>
+        <div class="filter-bar rv">
+          <div class="filters-viewport">
+            <div class="filters" id="filters"></div>
+          </div>
+          <div class="filters-nav">
+            <button data-dir="-1" aria-label="Scroll games left">
+              <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg>
+            </button>
+            <button data-dir="1" aria-label="Scroll games right">
+              <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
+            </button>
+          </div>
+        </div>
         <div id="rails"></div>
       </div>
     </section>

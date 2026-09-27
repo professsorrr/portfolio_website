@@ -69,14 +69,80 @@
 }
 
 /* ---------- filter chips ---------- */
+/* The chip row is one scrolling line with < > arrows, matching the rails.
+   .filters-viewport holds the fade that hints at more games off-screen. */
+.filter-bar {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.filters-viewport {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.filters-viewport::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 18px;
+  width: 60px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, var(--bg));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.filters-viewport.has-more::after {
+  opacity: 1;
+}
+.filters-nav {
+  display: flex;
+  gap: 8px;
+  flex: 0 0 auto;
+  padding-top: 2px;
+}
+.filters-nav button {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  display: grid;
+  place-items: center;
+  transition: 0.28s var(--ease);
+  color: var(--muted);
+}
+.filters-nav button:hover:not(:disabled) {
+  background: var(--text);
+  color: #000;
+  border-color: var(--text);
+}
+.filters-nav button:disabled {
+  opacity: 0.22;
+  cursor: default;
+}
+.filters-nav svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
 .filters {
   display: flex;
   gap: 9px;
   overflow-x: auto;
   padding: 4px 0 18px;
-  margin-bottom: 16px;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  scroll-behavior: smooth;
+  cursor: grab;
+}
+.filters.dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
 }
 .filters::-webkit-scrollbar {
   display: none;

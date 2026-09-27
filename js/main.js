@@ -5,7 +5,13 @@
    Edit content in site-config.js; this file only wires things together. */
 
 import { renderContent } from "./content.js";
-import { renderRails, setupRails, initFilters, applyView } from "./gallery.js";
+import {
+  renderRails,
+  setupRails,
+  setupChipScroller,
+  initFilters,
+  applyView,
+} from "./gallery.js";
 import { initShowreel, initLightbox } from "./lightbox.js";
 import { initContact, initNav, initReveal } from "./ui.js";
 
@@ -13,6 +19,7 @@ renderContent();
 
 renderRails();
 setupRails();
+setupChipScroller();
 initFilters();
 
 initShowreel();

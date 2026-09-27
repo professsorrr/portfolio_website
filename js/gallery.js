@@ -111,34 +111,35 @@ export function renderRails() {
   ).join("");
 }
 
-/* ---------- swipe / drag rails ---------- */
-function setupRail(block) {
-  const rail = $(".rail", block);
-  const vp = $(".rail-viewport", block);
-  const [prev, next] = $$(".rail-nav button", block);
-
-  const step = () => {
-    const card = $(".card", rail);
-    return card ? card.getBoundingClientRect().width + 16 : 320;
-  };
+/* ---------- horizontal scrolling ----------
+   Shared by the video rails and the game chip row: arrow buttons that grey
+   out at each end, click-drag with a mouse, shift-wheel, and a fade on the
+   right while there is more to see. Touch uses the browser's own momentum
+   scrolling, so it needs nothing here.
+     track    — the element that actually scrolls
+     viewport — wrapper that gets .has-more for the edge fade
+     buttons  — arrows carrying data-dir="-1" / data-dir="1"
+     stepFn   — how far one arrow press should move, in pixels */
+function attachScroller(track, viewport, buttons, stepFn) {
   const update = () => {
-    const max = rail.scrollWidth - rail.clientWidth - 2;
-    if (prev) prev.disabled = rail.scrollLeft <= 2;
-    if (next) next.disabled = rail.scrollLeft >= max;
-    vp.classList.toggle("has-more", rail.scrollLeft < max);
+    const max = track.scrollWidth - track.clientWidth - 2;
+    buttons.forEach((b) => {
+      b.disabled = +b.dataset.dir < 0 ? track.scrollLeft <= 2 : track.scrollLeft >= max;
+    });
+    if (viewport) viewport.classList.toggle("has-more", track.scrollLeft < max);
   };
 
-  $$(".rail-nav button", block).forEach((b) =>
+  buttons.forEach((b) =>
     b.addEventListener("click", () => {
-      const n = Math.max(1, Math.floor(rail.clientWidth / step()));
-      rail.scrollBy({
-        left: +b.dataset.dir * step() * n,
+      const n = Math.max(1, Math.floor(track.clientWidth / stepFn()));
+      track.scrollBy({
+        left: +b.dataset.dir * stepFn() * n,
         behavior: "smooth",
       });
     }),
   );
 
-  rail.addEventListener("scroll", update, { passive: true });
+  track.addEventListener("scroll", update, { passive: true });
   window.addEventListener("resize", update);
   setTimeout(update, 60);
 
@@ -147,52 +148,78 @@ function setupRail(block) {
     startX = 0,
     startScroll = 0,
     moved = 0;
-  rail.addEventListener("pointerdown", (e) => {
+  track.addEventListener("pointerdown", (e) => {
     if (e.pointerType === "touch") return;
     down = true;
     moved = 0;
     startX = e.clientX;
-    startScroll = rail.scrollLeft;
-    rail.classList.add("dragging");
-    rail.setPointerCapture(e.pointerId);
+    startScroll = track.scrollLeft;
+    track.classList.add("dragging");
+    track.setPointerCapture(e.pointerId);
   });
-  rail.addEventListener("pointermove", (e) => {
+  track.addEventListener("pointermove", (e) => {
     if (!down) return;
     const d = e.clientX - startX;
     moved = Math.abs(d);
-    rail.scrollLeft = startScroll - d;
+    track.scrollLeft = startScroll - d;
   });
   const endDrag = (e) => {
     if (!down) return;
     down = false;
-    rail.classList.remove("dragging");
+    track.classList.remove("dragging");
     try {
-      rail.releasePointerCapture(e.pointerId);
+      track.releasePointerCapture(e.pointerId);
     } catch (_) {}
+    /* a drag should not also count as a click on whatever sat under the cursor */
     if (moved > 6) {
       const kill = (ev) => ev.stopPropagation();
-      rail.addEventListener("click", kill, { capture: true, once: true });
+      track.addEventListener("click", kill, { capture: true, once: true });
     }
   };
-  rail.addEventListener("pointerup", endDrag);
-  rail.addEventListener("pointercancel", endDrag);
-  rail.addEventListener("pointerleave", endDrag);
+  track.addEventListener("pointerup", endDrag);
+  track.addEventListener("pointercancel", endDrag);
+  track.addEventListener("pointerleave", endDrag);
 
   /* trackpad horizontal + shift-wheel */
-  rail.addEventListener(
+  track.addEventListener(
     "wheel",
     (e) => {
       if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
       if (!e.shiftKey) return;
       e.preventDefault();
-      rail.scrollLeft += e.deltaY;
+      track.scrollLeft += e.deltaY;
     },
     { passive: false },
   );
+
+  return update;
 }
 
 export function setupRails() {
-  $$(".rail-block").forEach(setupRail);
+  $$(".rail-block").forEach((block) => {
+    const rail = $(".rail", block);
+    attachScroller(
+      rail,
+      $(".rail-viewport", block),
+      $$(".rail-nav button", block),
+      () => {
+        const card = $(".card", rail);
+        return card ? card.getBoundingClientRect().width + 16 : 320;
+      },
+    );
+  });
+}
+
+/* The game chips scroll the same way. One arrow press moves roughly one
+   screenful of chips. */
+export function setupChipScroller() {
+  const track = $("#filters");
+  attachScroller(
+    track,
+    $(".filters-viewport"),
+    $$(".filters-nav button"),
+    () => Math.max(160, track.clientWidth * 0.7),
+  );
 }
 
 /* ---------- filters ---------- */
