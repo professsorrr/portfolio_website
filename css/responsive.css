@@ -43,6 +43,10 @@
      the page on a tablet. */
   .about-visual {
     aspect-ratio: 4 / 5;
+    /* width:100% is required — the portrait inside is absolutely positioned,
+       so without it the auto margins leave this box with no content to size
+       against and it collapses to zero. */
+    width: 100%;
     max-width: 360px;
     margin: 0 auto;
   }
