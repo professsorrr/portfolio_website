@@ -20,12 +20,16 @@ export function renderContent() {
     SITE.location;
 
 
-  /* hero background clip */
+  /* Hero background: a looping clip if one is set, otherwise a still image.
+     fetchpriority high because this is the first thing a visitor sees. */
   if (SITE.heroVideo) {
     $("#heroVideoSlot").innerHTML =
       '<video autoplay muted loop playsinline src="' +
       esc(SITE.heroVideo) +
       '"></video>';
+  } else if (SITE.heroImage) {
+    $("#heroVideoSlot").innerHTML =
+      '<img src="' + esc(SITE.heroImage) + '" alt="" fetchpriority="high">';
   }
 
   /* marquee */

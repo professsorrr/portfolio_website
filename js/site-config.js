@@ -22,8 +22,10 @@ export const SITE = {
   discord: "yourdiscord",
   location: "Dhaka, BD",
 
-  // Optional background clip for the hero. Leave "" to use the gradient.
+  // Background for the hero (the "Frames that hit different" section).
+  // A video wins if both are set. Leave both "" to fall back to the gradient.
   heroVideo: "", // e.g. "videos/hero-loop.mp4"
+  heroImage: "images/cover.jpeg",
 
   // The big showreel. Either a YouTube id or a local file.
   showreel: { type: "yt", id: "", poster: "", title: "Showreel 2026" },
